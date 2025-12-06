@@ -1,2 +1,4 @@
+/infra/postgres/data/*
+*.csv
 .DS_Store
 */.DS_Store
