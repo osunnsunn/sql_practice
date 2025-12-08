@@ -3,13 +3,19 @@
 echo "-- start --"
 
 target_date="$1"
+CONTAINER_NAME="sql-batch-practice-db"
 
 export PGPASSWORD="password"
 
-psql -U postgres -d practice_db -h localhost -p 15432 -c \
+docker exec -i $CONTAINER_NAME psql -U postgres -d practice_db -c \
 "SELECT generate_daily_sales_summary('$target_date');"
 
-psql -U postgres -d practice_db -h localhost -p 15432 -c \
+if [ $? -ne 0 ]; then
+    echo "エラー：集計関数の実行が失敗しました。"
+    exit 1
+fi
+
+docker exec -i $CONTAINER_NAME psql -U postgres -d practice_db -c \
 "\COPY (
     SELECT * 
     FROM daily_sales_summary 

@@ -5,23 +5,20 @@ DECLARE
     product_record RECORD;
     new_order_id INT;
 BEGIN
-    cur_date := start_date;
-
-    WHILE cur_date <= end_date LOOP
-	
+    FOR cur_date IN SELECT d::date FROM generate_series(start_date, end_date, interval '1 day') AS d LOOP
         INSERT INTO orders(order_datetime)
         VALUES (cur_date)
         RETURNING order_id INTO new_order_id;
 
         FOR product_record IN SELECT product_id FROM products LOOP
             INSERT INTO order_details(order_id, product_id, quantity)
-            VALUES (new_order_id, product_record.product_id, 1);
+            VALUES (new_order_id, product_record.product_id, (FLOOR(RANDOM() * 10) + 1)::int);
         END LOOP;
 
         generated_order_id := new_order_id;
         RETURN NEXT;
 
-        cur_date := cur_date + 1;
     END LOOP;
+    RETURN;
 END;
 $$ LANGUAGE plpgsql;
