@@ -1,6 +1,8 @@
 CREATE OR REPLACE VIEW employee_salary_analysis  AS
 WITH salary_info AS ( --共通テーブル式CTE
-    SELECT department_id, AVG(salary)::INT AS department_avg_salary
+    SELECT
+        department_id, 
+        AVG(salary)::INT AS department_avg_salary
 		FROM employees
 	GROUP BY department_id
 )
