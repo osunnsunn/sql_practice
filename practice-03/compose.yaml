@@ -1,13 +1,13 @@
 services:
   db:
     image: postgres:15-alpine
-    container_name: sql-batch-practice-db
+    container_name: sql-batch-practice-db-03
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: practice_db
+      POSTGRES_DB: practice_db_03
     ports:
-      - "15432:5432"
+      - "35432:5432"
     volumes:
-      - ./infra/postgres/data:/var/lib/postgresql/data
+      - ./infra/postgres/data3:/var/lib/postgresql/data
       - ./infra/postgres/init:/docker-entrypoint-initdb.d
